@@ -1,0 +1,73 @@
+﻿@using AdeptusMart04.WebUI
+@using AdeptusMart01.Core.Entities
+@model List<BannerLeft>
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h5>Left Banner</h5>
+        <a asp-area="Management" asp-controller="BannerLeft" asp-action="Create" style="float:right;" class="btn btn-primary">New</a>
+    </div>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Main Title</th>
+                    
+                    <th>Title</th>
+                    
+                    <th>Description</th>
+                    
+                    <th>Background Image</th>
+
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MainTitle</td>
+                        
+                        <td>@item.Title</td>
+                        
+                        <td>@item.ButtonText</td>
+                        
+                        <td>
+                            <img src="@item.BackGroundUrl" width="150" />
+                        </td>
+                        <td>
+                            <a asp-area="Management" asp-controller="BannerLeft" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                            &ensp;
+                            <button type="button" class="btn btn-danger" onclick="Delete('@(item.Id)', this)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function Delete(id, elem){
+           $.ajax({
+               url: '/Management/BannerLeft/Delete',
+               type: 'POST',
+               dataType: 'json',
+               data: { "id": id },
+               success: function (e) {
+                   if (e.status) {
+                        $(elem).closest('tr').remove();
+                        console.info(e.message);
+                   } else {
+                        console.warn(e.message);
+                   }
+               },
+               error: function (e) {
+                   console.error(e);
+               }
+           });
+        }
+    </script>
+}
