@@ -50,6 +50,7 @@
             rtsJs.menuCurrentLink();
             rtsJs.modalOver();
             rtsJs.darklightSwitcher();
+            rtsJs.errormodalOver();
         },
 
         preloader: function(e){
@@ -761,6 +762,31 @@
         
         },
 
+        errormodalOver: function () {
+            $(document).ready(function () {
+                // Declare a variable to keep track of the modal state
+                var modalShown = false;
+
+                // Function to show the modal after a delay
+                function showModal() {
+                    if (!modalShown) {
+                        setTimeout(function () {
+                            $("#error-popup-1").modal('show');
+                            modalShown = true; // Set the flag to true when the modal is shown
+                        }, 2000);
+                    }
+                }
+
+                // Show the modal when the document is ready
+                showModal();
+
+                // Set the flag to false when the modal is closed
+                $('#error-popup-1').on('hidden.bs.modal', function () {
+                    modalShown = false;
+                });
+            });
+
+        },
 
         darklightSwitcher: function(){
           let html = document.documentElement;

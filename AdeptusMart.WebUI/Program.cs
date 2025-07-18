@@ -14,7 +14,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// DbContext'i connection string ile ekle
+builder.Services.AddDistributedMemoryCache(); 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 
 
 builder.Services.AddDbContext<AdeptusMartDbContext>(options =>
@@ -24,17 +31,18 @@ builder.Services.AddDbContext<AdeptusMartDbContext>(options =>
     )
 );
 
-// Generic repository için kayýt (tek seferlik!)
+
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-
-// Business servisler için kayýt (tek seferlik!)
-builder.Services.AddScoped<HomeService>();
-
-
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IAccountRepository, EfAccountRepository>();
+
+
+builder.Services.AddScoped<HomeService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<ShopgridService>();
 builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<RegisterService>();
+builder.Services.AddScoped<LoginService>();
 
 
 var app = builder.Build();
@@ -51,12 +59,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+
 app.UseAuthorization();
 
-// Statik dosyalar varsa eðer, eðer MapStaticAssets() özel bir extension deðilse kaldýrabilirsin.
-// app.MapStaticAssets(); // Eðer özel bir uzantý ise býrakabilirsin
 
-// Endpoint yönlendirmeleri
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapAreaControllerRoute(

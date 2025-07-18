@@ -1,8 +1,10 @@
 ﻿@using AdeptusMart04.WebUI.Models
-@model LoginViewModel
+@model RegisterViewModel
+
 @{
     Layout = "_Layout";
 }
+
 <!-- rts header area start -->
 <div class="rts-header-one-area-one">
     <div class="header-top-area">
@@ -560,6 +562,7 @@
 </div>
 <!-- header style two End -->
 
+
 <div class="section-seperator bg_light-1">
     <div class="container">
         <hr class="section-seperator">
@@ -577,19 +580,28 @@
                     <div class="logo-area mb--0">
                         <img class="mb--10" src="~/assets/images/icons/127.svg" alt="logo">
                     </div>
-                    <h3 class="title">Login Into Your Account</h3>
-                    <form method="post" asp-validation-summary="ModelOnly" asp-action="Login" asp-controller="Login" class="registration-form">
+                    <h3 class="title">Register Into Your Account</h3>
+                    <form method="post" asp-validation-summary="ModelOnly" asp-action="Register" asp-controller="Register" class="registration-form">
                         <div class="input-wrapper">
                             <label asp-for="Account.Username">Username*</label>
                             <input type="text" asp-for="Account.Username">
-                        </div>                        
+                        </div>
+                        <div class="input-wrapper">
+                            <label asp-for="Account.Email">Email*</label>
+                            <input type="text" asp-for="Account.Email">
+                        </div>
                         <div class="input-wrapper">
                             <label asp-for="Account.Password">Password*</label>
                             <input type="text" asp-for="Account.Password">
                         </div>
-                        <button type="submit" class="rts-btn btn-primary">Login</button>                       
+                        <button type="submit" class="rts-btn btn-primary">Register Account</button>
+                        <div class="another-way-to-registration">
+                            <div class="registradion-top-text">
+                                <span>Or Register With</span>
+                            </div>
+                        </div>                        
                     </form>
-                    <a asp-controller="Register" asp-action="Index" class="rts-btn btn-primary">Register Account</a>
+                    <a asp-controller="Login" asp-action="Index" class="rts-btn btn-primary">Login Account</a>
                 </div>
             </div>
         </div>
@@ -1110,7 +1122,6 @@
 </div>
 
 
-
 <!--================= Preloader Section Start Here =================-->
 <!-- <div id="weiboo-load">
 <div class="preloader-new">
@@ -1163,7 +1174,7 @@ stroke-dashoffset="81.68" />
     </svg>
 </div>
 <!-- progress area end -->
-@if (TempData["IsLoginSuccess"] != null && (bool)TempData["IsLoginSuccess"] == false)
+@if(TempData["IsRegisterSuccess"] != null && (bool)TempData["IsRegisterSuccess"] == false)
 {
     <div id="error-popup-1" class="modal fade" role="dialog">
         <div class="modal-dialog bg_image">
@@ -1172,7 +1183,7 @@ stroke-dashoffset="81.68" />
                     <div class="inner-content">
                         <div class="content">
                             <h1 class="title">
-                                You are not known to the Throne. Check your credentials, heretic.
+                                Access denied! — Username already in service to the God-Emperor.
                             </h1>
                         </div>
                     </div>
@@ -1180,5 +1191,10 @@ stroke-dashoffset="81.68" />
             </div>
         </div>
     </div>
+    
 }
+
+
+
+
 

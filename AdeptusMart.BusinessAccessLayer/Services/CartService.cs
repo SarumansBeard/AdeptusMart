@@ -14,13 +14,55 @@ namespace AdeptusMart03.BusinessAccessLayer.Services
     {
         private readonly IRepository<CartItem> _cartItemRepo;
         private readonly IRepository<Cart> _cartRepo;
+        private readonly IRepository<Account> _accountRepo;
         
        
-        public CartService(IRepository<CartItem> cartItemRepo, IRepository<Cart> cartRepo)
+        public CartService(IRepository<CartItem> cartItemRepo, IRepository<Cart> cartRepo, IRepository<Account> _accountRepo)
         {
             _cartRepo = cartRepo;
             _cartItemRepo = cartItemRepo;
+            _accountRepo = _accountRepo;
         }
+
+        public async Task<List<CartItem>> ShowCartItems(string sessionId)
+        {
+            var allUserId = await _accountRepo.GetAllAsync();
+
+            var sessionUserId = allUserId
+                .Where(a => a.SessionId == sessionId && a.IsSignIn == true)
+                .Select(a => a.Id).FirstOrDefault();
+
+            var allCartId = await _cartRepo.GetAllAsync();
+
+            var sessionCartId = allCartId
+                .Where(x=>x.UserId == sessionUserId)
+                .Select(x => x.Id).FirstOrDefault();
+
+            if (sessionUserId == Guid.Empty)
+            {
+                return new List<CartItem>();
+            }
+            try
+            {
+                var allcartItems = await _cartItemRepo.GetAllAsync();
+
+                var userCartItems = allcartItems
+                    .Where(x=>x.CartId == sessionCartId)
+                    .ToList();
+
+                return userCartItems;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Sepet öğeleri alınırken hata: {ex.Message}");
+                throw;
+            }
+
+
+
+        }
+
+
 
         
         public async Task AddToCartService(Guid productId, int quantity)
@@ -56,20 +98,11 @@ namespace AdeptusMart03.BusinessAccessLayer.Services
             {
                 Console.WriteLine($"Cart eklenirken hata: {ex.Message}");
                 throw;
-            }
-            
-            
-            
-
-
-            
-
-
-           
-           
-
-
-            return;
+            }        
+                    
+                   
+                  
+           return;
         }
 
 

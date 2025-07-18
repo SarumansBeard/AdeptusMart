@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Areas\Management\Data\" />
     <Folder Include="Migrations\" />
+    <Folder Include="UserContext\" />
     <Folder Include="wwwroot\upload\" />
   </ItemGroup>
 

@@ -27,7 +27,7 @@ namespace AdeptusMart.DataAccess.Concrete
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
-        }
+        }       
 
         public async Task AddAsync(T entity)
         {
