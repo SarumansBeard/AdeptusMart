@@ -22,8 +22,10 @@ namespace AdeptusMart02.DataAccessLayer.Contexts
         public DbSet <Category> Categories { get; set; }
         public DbSet <TrendingBanner> TrendingBanners { get; set; }
         public DbSet <Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
         public DbSet <Account> Accounts { get; set; }
         public DbSet <Receipt> Receipts { get; set; }
+        
         
 
 

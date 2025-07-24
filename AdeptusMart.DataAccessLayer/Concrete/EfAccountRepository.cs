@@ -23,5 +23,14 @@ namespace AdeptusMart02.DataAccessLayer.Concrete
         {
             return await _context.Accounts.FirstOrDefaultAsync(x=>x.Username == username && x.Password == password);
         }
+
+        public async Task<Guid> GetUserIdWithSesionId(string sessionId)
+        {
+             var user =await _context.Accounts.FirstOrDefaultAsync(x => x.SessionId == sessionId);
+             var userId = user?.Id ?? Guid.Empty;
+
+            return userId;
+        }
+
     }
 }

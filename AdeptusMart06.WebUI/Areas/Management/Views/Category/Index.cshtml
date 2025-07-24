@@ -1,0 +1,64 @@
+﻿@using AdeptusMart06.WebUI
+@using AdeptusMart01.Core.Entities
+@model List<Category>
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h5>Category</h5>
+        <a asp-area="Management" asp-controller="Category" asp-action="Create" style="float:right;" class="btn btn-primary">New</a>
+    </div>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Image</th>
+
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>                       
+
+                        <td>
+                            <img src="@item.ImageUrl" width="150" />
+                        </td>
+                        <td>
+                            <a asp-area="Management" asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                            &ensp;
+                            <button type="button" class="btn btn-danger" onclick="Delete('@(item.Id)', this)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function Delete(id, elem){
+           $.ajax({
+               url: '/Management/Category/Delete',
+               type: 'POST',
+               dataType: 'json',
+               data: { "id": id },
+               success: function (e) {
+                   if (e.status) {
+                        $(elem).closest('tr').remove();
+                        console.info(e.message);
+                   } else {
+                        console.warn(e.message);
+                   }
+               },
+               error: function (e) {
+                   console.error(e);
+               }
+           });
+        }
+    </script>
+}

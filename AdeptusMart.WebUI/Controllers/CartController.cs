@@ -15,25 +15,30 @@ namespace AdeptusMart04.WebUI.Controllers
             _cartcontext = cartcontext;
         }   
         
-        public async Task<IActionResult> ShowCartItems(string sessionId)
+        public async Task<IActionResult> ShowCartItems()
         {
             var sesionIdfromContext = HttpContext.Session.GetString("SessionId");
 
-            var cartItems = await _cartcontext.ShowCartItems(sesionIdfromContext);
+            List<CartItem> cartItems = await _cartcontext.ShowCartItems(sesionIdfromContext);
 
-            var model = new CartViewModel
-            {
-                cartItems = cartItems
-            };
+            var model = new CartViewModel();
+
+            model.CartItems = cartItems;
 
             return View(model);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> AddToCart(Guid productId, int quantity)
+        public async Task<IActionResult> AddToCart(CartViewModel model)
         {
-            await _cartcontext.AddToCartService(productId, quantity);          
+
+            Guid productId = model.CartItem.ProductId;
+            int quantity = model.CartItem.Quantity;
+
+            var sesionIdfromContext = HttpContext.Session.GetString("SessionId");
+
+            await _cartcontext.AddToCartService(productId, quantity, sesionIdfromContext);          
 
             return RedirectToAction("Index","Home");
         }

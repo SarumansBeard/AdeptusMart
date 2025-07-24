@@ -13,11 +13,11 @@ namespace AdeptusMart03.BusinessAccessLayer.Services
     public class CartService
     {
         private readonly IRepository<CartItem> _cartItemRepo;
-        private readonly IRepository<Cart> _cartRepo;
-        private readonly IRepository<Account> _accountRepo;
-        
-       
-        public CartService(IRepository<CartItem> cartItemRepo, IRepository<Cart> cartRepo, IRepository<Account> _accountRepo)
+        private readonly ICartRepository _cartRepo;
+        private readonly IAccountRepository _accountRepo;
+
+
+        public CartService(IRepository<CartItem> cartItemRepo, ICartRepository cartRepo, IAccountRepository _accountRepo)
         {
             _cartRepo = cartRepo;
             _cartItemRepo = cartItemRepo;
@@ -65,41 +65,34 @@ namespace AdeptusMart03.BusinessAccessLayer.Services
 
 
         
-        public async Task AddToCartService(Guid productId, int quantity)
+        public async Task AddToCartService(Guid productId, int quantity,string sesionIdfromContext)
         {
-            if (productId == Guid.Empty || quantity <= 0)
+            
+            if (productId == Guid.Empty || quantity <= 0 || sesionIdfromContext == null)
             {
                return;
-            }
+            }          
 
+            var cartId = await _cartRepo.GetCartIdWithSessionId(sesionIdfromContext);
+           
             try
             {
-                var existingCart = new Cart
+                CartItem cartItem = new CartItem
                 {
                     Id = Guid.NewGuid(),
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
-                    
+                    CartId = cartId,
+                    Quantity = quantity,
+                    ProductId = productId
                 };
 
-                await _cartRepo.AddAsync(existingCart);
-
-
-                var newCartItem = new CartItem
-                {
-                    CartId = existingCart.Id,
-                    Id = productId,
-                    Quantity = quantity
-                };
-
-                await _cartItemRepo.AddAsync(newCartItem);
+                await _cartItemRepo.AddAsync(cartItem);
             }
             catch(Exception ex)
             {
                 Console.WriteLine($"Cart eklenirken hata: {ex.Message}");
                 throw;
-            }        
-                    
+            }     
+                  
                    
                   
            return;

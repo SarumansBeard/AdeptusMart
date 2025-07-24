@@ -4,6 +4,9 @@ namespace AdeptusMart04.WebUI.Models
 {
     public class CartViewModel
     {
-        public List<CartItem> cartItems { get; set; } = new List<CartItem>();
+        public CartItem CartItem { get; set; } = new CartItem();
+        public List<CartItem> CartItems { get; set; } = new List<CartItem>();
+        public Cart Cart { get; set; } = new Cart();
+        public List<Product> Products { get; set; } = new List<Product>();
     }
 }

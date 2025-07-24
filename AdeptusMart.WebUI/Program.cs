@@ -34,6 +34,7 @@ builder.Services.AddDbContext<AdeptusMartDbContext>(options =>
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICartRepository, EfCartRepository>();
 builder.Services.AddScoped<IAccountRepository, EfAccountRepository>();
 
 

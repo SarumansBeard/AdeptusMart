@@ -4,12 +4,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Configurations>Debug;Release;Full</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Management\Data\" />
-    <Folder Include="Migrations\" />
-    <Folder Include="UserContext\" />
     <Folder Include="wwwroot\upload\" />
   </ItemGroup>
 
@@ -33,6 +32,7 @@
     <ProjectReference Include="..\AdeptusMart.BusinessAccessLayer\AdeptusMart03.BusinessAccessLayer.csproj" />
     <ProjectReference Include="..\AdeptusMart.Core\AdeptusMart01.Core.csproj" />
     <ProjectReference Include="..\AdeptusMart.DataAccessLayer\AdeptusMart02.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\AdeptusMart05.Api\AdeptusMart05.Api.csproj" />
   </ItemGroup>
 
 </Project>
