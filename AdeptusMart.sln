@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdeptusMart02.DataAccessLay
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdeptusMart03.BusinessAccessLayer", "AdeptusMart.BusinessAccessLayer\AdeptusMart03.BusinessAccessLayer.csproj", "{F2B7B522-B5AA-413E-9C28-3F3F1E880440}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdeptusMart05.Api", "AdeptusMart05.Api\AdeptusMart05.Api.csproj", "{A3C0B5D0-3029-418A-AE7D-09D7B302D1D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdeptusMart04.Api", "AdeptusMart05.Api\AdeptusMart04.Api.csproj", "{A3C0B5D0-3029-418A-AE7D-09D7B302D1D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdeptusMart04.WebUI", "AdeptusMart.WebUI\AdeptusMart04.WebUI.csproj", "{DCE6DBF6-5D3A-0DBF-72AD-A23A5A972034}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdeptusMart05.WebUI", "AdeptusMart.WebUI\AdeptusMart05.WebUI.csproj", "{DCE6DBF6-5D3A-0DBF-72AD-A23A5A972034}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

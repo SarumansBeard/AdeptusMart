@@ -1,6 +1,7 @@
 ﻿using AdeptusMart.Business.Services;
 using AdeptusMart01.Core.Entities;
 using AdeptusMart04.WebUI.Models;
+using AdeptusMart05.WebUI.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
@@ -10,13 +11,11 @@ namespace AdeptusMart04.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly HomeService _homeService;
         private readonly HttpClient _httpClient;
         
 
-        public HomeController(HomeService homeService)
-        {
-            _homeService = homeService;
+        public HomeController()
+        {            
             _httpClient = new HttpClient();
             
         }
@@ -30,7 +29,7 @@ namespace AdeptusMart04.WebUI.Controllers
             //model.BannerRight = await _homeService.GetBannerRightAsync();
             model.BannerRight = await GetBannerRight();
             //model.Products = await _homeService.GetProductsAsync();
-            model.Products = await GetProducts();
+            model.ProductDTOs = await GetProducts();
             //model.Categories = await _homeService.GetCategoriesAsync();
             model.Categories = await GetCategories();
             //model.TrendingBanner = await _homeService.GetTrendingBannerAsync();
@@ -93,7 +92,7 @@ namespace AdeptusMart04.WebUI.Controllers
             }
         }
 
-        public async Task<List<Product>?> GetProducts()
+        public async Task<List<ProductDTO>?> GetProducts()
         {
             HttpResponseMessage response = await _httpClient.GetAsync("https://localhost:7112/api/product/get");
             if (response.StatusCode == HttpStatusCode.NotFound)
@@ -102,16 +101,17 @@ namespace AdeptusMart04.WebUI.Controllers
             }
             else if (response.StatusCode == HttpStatusCode.NoContent)
             {
-                return new List<Product>();
+                return new List<ProductDTO>();
             }
             else if (response.StatusCode == HttpStatusCode.OK)
             {
                 HttpContent content = response.Content;
                 string stringContent = await content.ReadAsStringAsync();
-                List<Product>? products = JsonConvert.DeserializeObject<List<Product>?>(stringContent);
+                List<ProductDTO>? productDTOs = JsonConvert.DeserializeObject<List<ProductDTO>?>(stringContent);
 
+                
 
-                return products ?? new List<Product>();
+                return productDTOs ?? new List<ProductDTO>();
             }
             else
             {
@@ -241,5 +241,28 @@ namespace AdeptusMart04.WebUI.Controllers
                 return null;
             }
         }
+
+        public async Task<int?> ItemCountByCategory()
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync("https://localhost:7112/api/itemcountbycategory/get");
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new int();
+            }
+            else if (response.StatusCode == HttpStatusCode.OK)
+            {
+                HttpContent content = response.Content;
+                string stringContent = await content.ReadAsStringAsync();
+                int? itemcountbycategory = JsonConvert.DeserializeObject<int?>(stringContent);
+
+
+                return itemcountbycategory ?? new int();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
     }
 }

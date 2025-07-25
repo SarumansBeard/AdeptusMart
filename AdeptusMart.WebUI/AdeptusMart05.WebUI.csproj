@@ -32,7 +32,7 @@
     <ProjectReference Include="..\AdeptusMart.BusinessAccessLayer\AdeptusMart03.BusinessAccessLayer.csproj" />
     <ProjectReference Include="..\AdeptusMart.Core\AdeptusMart01.Core.csproj" />
     <ProjectReference Include="..\AdeptusMart.DataAccessLayer\AdeptusMart02.DataAccessLayer.csproj" />
-    <ProjectReference Include="..\AdeptusMart05.Api\AdeptusMart05.Api.csproj" />
+    <ProjectReference Include="..\AdeptusMart05.Api\AdeptusMart04.Api.csproj" />
   </ItemGroup>
 
 </Project>

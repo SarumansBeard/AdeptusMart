@@ -1,5 +1,6 @@
 ﻿@using AdeptusMart01.Core.Entities
 @using AdeptusMart04.WebUI.Models
+@using AdeptusMart05.WebUI.DTOs
 
 @model IndexViewModel
 
@@ -1041,18 +1042,18 @@
 
                                                 <div class="swiper-wrapper">
 
-                                                    @foreach(var item in @Model.Categories)
+                                                    @for(int i = 0 ; i<@Model.Categories.Count;i++)
                                                     {
                                                         <div class="swiper-slide">
                                                             <div class="single-category-one height-230">
-                                                                <a href="/Shopgrid?categoryIds=@item.Id" class="thumbnail">
+                                                                <a href="/Shopgrid?categoryIds=@Model.Categories[i].Id" class="thumbnail">
 
-                                                                    <img src="@item.ImageUrl"  alt="category">
+                                                                    <img src="@Model.Categories[i].ImageUrl"  alt="category">
 
                                                                 </a>
                                                                 <div class="inner-content-category">
-                                                                    <p href="/Shopgrid?categoryIds=@item.Id">@item.Name</p>
-                                                                    <span>@item.Products.Where(x=>  !x.IsDeleted).Count()</span>
+                                                                    <p href="/Shopgrid?categoryIds=@Model.Categories[i].Id">@Model.Categories[i].Name</p>
+                                                                    <span>@Model.ProductDTOs.Where(x=>x.Category.Id == @Model.Categories[i].Id).Count()</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1148,7 +1149,7 @@
             <div class="col-lg-12">
                 <div class="tab-content" id="myTabContent">
                     @{
-                        List<Product> popularitems = Model.Products.Take(12).ToList();
+                        List<ProductDTO> popularitems = Model.ProductDTOs.Take(12).ToList();
 
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="row g-4 mt--0">

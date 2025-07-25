@@ -1,4 +1,5 @@
 ﻿using AdeptusMart01.Core.Entities;
+using AdeptusMart05.WebUI.DTOs;
 
 namespace AdeptusMart04.WebUI.Models
 {
@@ -8,7 +9,7 @@ namespace AdeptusMart04.WebUI.Models
 
         public List<BannerLeft> BannerLefts { get; set; } = new List<BannerLeft>();
         public BannerRight BannerRight { get; set; } = new BannerRight(); 
-        public List<Product> Products { get; set; } = new List<Product>(); 
+        public List<ProductDTO> ProductDTOs { get; set; } = new List<ProductDTO>(); 
         public List<Category> Categories { get; set; } = new List<Category>(); 
         public TrendingBanner TrendingBanner { get; set; } = new TrendingBanner();
         public List<Product> bestRatedProducts { get; set; }
