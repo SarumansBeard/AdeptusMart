@@ -20,34 +20,25 @@ namespace AdeptusMart03.BusinessAccessLayer.Services
             _accountRepository = accountRepository;
         }
 
-        public async Task<bool> LogIn(string username, string password,string sessionId)
+        public async Task<Guid?> LogIn(string username, string password)
         {
-            bool success = false;
-
             try 
             {
                 var user = await _accountRepository.GetByCredentialsAsync(username, password);
 
                 if (user == null)
-                {
-                    success = false;
-                    return success;
+                {                    
+                    return null;
                 }
                 else
-                {                    
-                        user.IsSignIn = true;
-                        user.SessionId = sessionId; 
-                        await _accountRepo.UpdateAsync(user);
-                        success = true;                        
-                        return success;                   
+                {                  
+                    return user.Id;                  
                 }
             }
             catch(Exception ex)
             {
                 throw new Exception($"Login işlemi sırasında hata oluştu: {ex.Message}");
-            }
-
-            
+            }                       
                        
         }
 

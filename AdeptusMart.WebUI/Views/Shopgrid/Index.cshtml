@@ -6,7 +6,8 @@
     Layout = "_Layout";
     var selectedCategories = ViewBag.SelectedCategories as List<Guid> ?? new List<Guid>();
     var filteredPrices = ViewBag.filteredPrices as List<decimal> ?? new List<decimal>();	
-    var sortBy = ViewBag.sortBy != null ? (decimal)ViewBag.sortBy : 0;
+    var sortBy = ViewBag.sortBy != null ? (decimal)ViewBag.sortBy : 0; 
+    var IsLoggedIn =ViewBag.IsLoginSuccess;
 
 }
 
@@ -27,7 +28,7 @@
                         <div class="contact-number-area">
                             <p>
                                 Need help? Call Us:
-                                <a href="tel:+4733378901">+258 3268 21485</a>
+                                <a href="tel:+4733378901">+6754456747447645</a>
                             </p>
                         </div>
                     </div>
@@ -593,28 +594,23 @@
 <div class="shop-grid-sidebar-area rts-section-gap">
     <form method="get" asp-action="Index" asp-controller="Shopgrid">
        <div class="container">
-         <div class="row g-0">
-             
+         <div class="row g-0">             
            <div class="col-xl-3 col-lg-12 pr--70 pr_lg--10 pr_sm--10 pr_md--5 rts-sticky-column-item">
-                <div class="sidebar-filter-main theiaStickySidebar">
-                    
-                        <div class="single-filter-box bg-white">
+             <div class="sidebar-filter-main theiaStickySidebar">                    
+                  <div class="single-filter-box bg-white">
                             <h5 class="title">Widget Price Filter</h5>
                             <div class="filterbox-body">
                                 <div class="price-input-area">
                                     <div class="half-input-wrapper">
                                         <div class="single">
-
                                             <label for="inputMin">Min price</label>
                                             <input id="inputMin" name="filteredPrice" type="text" value="@((ViewBag.FilteredPrice as List<decimal>)?.ElementAtOrDefault(0) ?? 0)" />
                                         </div>
-
                                         <div class="single">
                                             <label for="inputMax">Max price</label>
                                             <input id="inputMax" name="filteredPrice" type="text" value="@((ViewBag.FilteredPrice as List<decimal>)?.ElementAtOrDefault(1) ?? 250)" />
                                         </div>
                                     </div>
-
                                     <div id="slider-no-overlap"></div>
 
                                     @{
@@ -623,20 +619,13 @@
                                     }                                    
 
                                     <input type="hidden" name="filteredPrice" id="priceMin" value="@minPrice" />
-                                    <input type="hidden" name="filteredPrice" id="priceMax" value="@maxPrice" />
-                                                                       
+                                    <input type="hidden" name="filteredPrice" id="priceMax" value="@maxPrice" />                                                                     
+                                    <button type="submit" class="rts-btn btn-primary">Filter</button>                                   
 
-                                     <button type="submit" class="rts-btn btn-primary">Filter</button>
-                                    
-
-                                </div>
-                                
-
+                                </div>                               
                             </div>
-                        </div>
-
-                     
-                        <div class="single-filter-box bg-white">
+                        </div>                     
+                  <div class="single-filter-box bg-white">
                             <h5 class="title">Product Categories</h5>
                             <div class="filterbox-body">
                                 <div class="category-wrapper ">                      
@@ -647,17 +636,14 @@
                                             @(selectedCategories.Contains(@Model.Categories[i].Id) ? "checked" : "") />
                                             <label for="cat@(i)">@Model.Categories[i].Name</label>
                                         </div>
-                                    }                  
-
+                                    }                
                                 </div>
                             </div>
-                        </div>
-                                     
-
+                        </div>                                    
                 </div>
-               </div>
+           </div>
            <div class="col-xl-9 col-lg-12">               
-              <div class="filter-select-area">
+             <div class="filter-select-area">
                  <div class="top-filter">
                     <span>Showing @Model.Products.Count results</span>
                     <div class="right-end">
@@ -728,8 +714,8 @@
                             </div>
                  </div>                    
               </div>
-              <div class="tab-content" id="myTabContent">
-                <div class="product-area-wrapper-shopgrid-list mt--20 tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+             <div class="tab-content" id="myTabContent">
+               <div class="product-area-wrapper-shopgrid-list mt--20 tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
                             <div class="row g-4">
                                 @foreach (var item in Model.Products)
                                 {
@@ -760,9 +746,7 @@
                                                 </div>
                                             </div>
                                             <!-- iamge and sction area start -->
-
                                             <div class="body-content">
-
                                                 <a href="shop-details/{@item.Id}">
                                                     <h4 class="title">
                                                         @item.Name
@@ -782,9 +766,11 @@
                                                         </div>
                                                     </div>
                                                     <a asp-controller="Home" asp-action="Index" class="rts-btn btn-primary radious-sm with-icon">
-                                                        <div class="btn-text">
+
+                                                        <button type="button" class="btn-text" style="color:azure" data-product-id="@item.Id" data-user-id="@(ViewBag.UserId ?? "")">
                                                             Add To Cart
-                                                        </div>
+                                                        </button>
+                                                       
                                                         <div class="arrow-icon">
                                                             <i class="fa-regular fa-cart-shopping"></i>
                                                         </div>
@@ -797,11 +783,9 @@
                                         </div>
                                     </div>
                                 }
-
-
                             </div>
                         </div>
-                <div class="product-area-wrapper-shopgrid-list with-list mt--20 tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+               <div class="product-area-wrapper-shopgrid-list with-list mt--20 tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                             <div class="row">
                                 <div class="col-lg-12">
                                     @foreach (var item in Model.Products)
@@ -890,7 +874,7 @@
             <div class="col-lg-12">
                 <div class="footer-main-content-wrapper pb--70">
                     <!-- single footer area wrapper -->
-                    <div class="single-footer-wized">
+                    <div class="single-footer-wized">                    
                         <h3 class="footer-title">About Company</h3>
                         <div class="call-area">
                             <div class="icon">
@@ -995,6 +979,9 @@
 </div>
 <!-- rts footer one area end -->
 <!-- rts copyright-area start -->
+<div>
+
+
 <div class="rts-copyright-area bg-white">
     <div class="container">
         <div class="row">
@@ -1015,102 +1002,7 @@
 </div>
 <!-- rts copyright-area end -->
 
-@* 
-<div class="product-details-popup-wrapper">
-    <div class="rts-product-details-section rts-product-details-section2 product-details-popup-section">
-        <div class="product-details-popup">
-            <button class="product-details-close-btn"><i class="fal fa-times"></i></button>
-            <div class="details-product-area">
-                <div class="product-thumb-area">
-                    <div class="cursor"></div>
-                    <div class="thumb-wrapper one filterd-items figure">
-                        <div class="product-thumb zoom" onmousemove="zoom(event)" style="background-image: url(assets/images/products/product-details.jpg)">
-                            <img src="~/assets/images/products/product-details.jpg" alt="product-thumb">
-                        </div>
-                    </div>
-                    <div class="thumb-wrapper two filterd-items hide">
-                        <div class="product-thumb zoom" onmousemove="zoom(event)" style="background-image: url(assets/images/products/product-filt2.jpg)">
-                            <img src="~/assets/images/products/product-filt2.jpg" alt="product-thumb">
-                        </div>
-                    </div>
-                    <div class="thumb-wrapper three filterd-items hide">
-                        <div class="product-thumb zoom" onmousemove="zoom(event)" style="background-image: url(assets/images/products/product-filt3.jpg)">
-                            <img src="~/assets/images/products/product-filt3.jpg" alt="product-thumb">
-                        </div>
-                    </div>
-                    <div class="product-thumb-filter-group">
-                        <div class="thumb-filter filter-btn active" data-show=".one"><img src="~/assets/images/products/product-filt1.jpg" alt="product-thumb-filter"></div>
-                        <div class="thumb-filter filter-btn" data-show=".two"><img src="~/assets/images/products/product-filt2.jpg" alt="product-thumb-filter"></div>
-                        <div class="thumb-filter filter-btn" data-show=".three"><img src="~/assets/images/products/product-filt3.jpg" alt="product-thumb-filter"></div>
-                    </div>
-                </div>
-                <div class="contents">
-                    <div class="product-status">
-                        <span class="product-catagory">Dress</span>
-                        <div class="rating-stars-group">
-                            <div class="rating-star"><i class="fas fa-star"></i></div>
-                            <div class="rating-star"><i class="fas fa-star"></i></div>
-                            <div class="rating-star"><i class="fas fa-star-half-alt"></i></div>
-                            <span>10 Reviews</span>
-                        </div>
-                    </div>
-                    <h2 class="product-title">Wide Cotton Tunic Dress <span class="stock">In Stock</span></h2>
-                    <span class="product-price"><span class="old-price">$9.35</span> $7.25</span>
-                    <p>
-                        Priyoshop has brought to you the Hijab 3 Pieces Combo Pack PS23. It is a
-                        completely modern design and you feel comfortable to put on this hijab.
-                        Buy it at the best price.
-                    </p>
-                    <div class="product-bottom-action">
-                        <div class="cart-edit">
-                            <div class="quantity-edit action-item">
-                                <button class="button"><i class="fal fa-minus minus"></i></button>
-                                <input type="text" class="input" value="01" />
-                                <button class="button plus">+<i class="fal fa-plus plus"></i></button>
-                            </div>
-                        </div>
-                        <a href="#" class="rts-btn btn-primary radious-sm with-icon">
-                            <div class="btn-text">
-                                Add To Cart
-                            </div>
-                            <div class="arrow-icon">
-                                <i class="fa-regular fa-cart-shopping"></i>
-                            </div>
-                            <div class="arrow-icon">
-                                <i class="fa-regular fa-cart-shopping"></i>
-                            </div>
-                        </a>
-                        <a href="javascript:void(0);" class="rts-btn btn-primary ml--20"><i class="fa-light fa-heart"></i></a>
-                    </div>
-                    <div class="product-uniques">
-                        <span class="sku product-unipue"><span>SKU: </span> BO1D0MX8SJ</span>
-                        <span class="catagorys product-unipue"><span>Categories: </span> T-Shirts, Tops, Mens</span>
-                        <span class="tags product-unipue"><span>Tags: </span> fashion, t-shirts, Men</span>
-                    </div>
-                    <div class="share-social">
-                        <span>Share:</span>
-                        <a class="platform" href="http://facebook.com" target="_blank">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a class="platform" href="http://twitter.com" target="_blank">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a class="platform" href="http://behance.com" target="_blank">
-                            <i class="fab fa-behance"></i>
-                        </a>
-                        <a class="platform" href="http://youtube.com" target="_blank">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a class="platform" href="http://linkedin.com" target="_blank">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
- *@
+
 <!-- successfully add in wishlist -->
 <div class="successfully-addedin-wishlist">
     <div class="d-flex" style="align-items: center; gap: 15px;">
@@ -1353,5 +1245,7 @@
         <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" style="transition: stroke-dashoffset 10ms linear 0s; stroke-dasharray: 307.919, 307.919; stroke-dashoffset: 307.919;"></path>
     </svg>
 </div>
+
+
 <!-- progress area end -->
 

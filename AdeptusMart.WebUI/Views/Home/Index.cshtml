@@ -6,6 +6,7 @@
 
 @{
     Layout = "_Layout";
+    var IsLoggedIn =ViewBag.IsLoginSuccess;
 }
 
 <!-- rts header area start -->
@@ -17,7 +18,7 @@
                     <div class="bwtween-area-header-top header-top-style-four">
                         <div class="hader-top-menu">
                             <a href="#">About Us</a>
-                            <a asp-controller="Login" asp-action="Index">My Account </a>
+                            <a asp-controller="Account" asp-action="Index">My Account </a>
                             <a href="#">Wishlist</a>
                             <a href="#">Order Tracking</a>
                         </div>
@@ -1079,6 +1080,7 @@
     </div>
 </div>
 <!-- rts categorya area end -->
+
 <!-- rts feature product 2 area start -->
 <div class="rts-feature-large-product-area rts-section-gapBottom">
 
@@ -1119,9 +1121,11 @@
     </div>
 </div>
 <!-- rts feature product 2 area end -->
+
 <!-- popular -product wrapper 7 -->
 <div class="popular-product-col-7-area rts-section-gapBottom">
-    <div class="container cover-card-main-over-white mt--60 ">
+    <div class="container">
+      <div class="container cover-card-main-over-white mt--60 ">
         <div class="row">
             <div class="col-lg-12">
                 <div class="title-area-between mb--15">
@@ -1199,7 +1203,7 @@
                                                 <a class="rts-btn btn-primary radious-sm with-icon">
 													<input type="hidden" name="productId" value="@popularitems[i].Id" />
 													<input type="hidden" name="quantity" value="1" />
-                                                    <button type="submit" class="btn-text">
+                                                        <button type="button" class="btn-text" data-product-id="@popularitems[i].Id" data-user-id="@(ViewBag.UserId ?? "")">
                                                         Add To Cart
                                                     </button>
                                                     <div class="arrow-icon">
@@ -3397,12 +3401,13 @@
             </div>
         </div>
     </div>
+    </div>
 <!-- popular -product wrapper 7 end -->
 
 <!-- tranding items tabs areas tart -->
- <div class="container cover-card-main-over-white mt--160">
-        <div class="container">
-            <div class="row">
+<div class="container">
+ <div class="container cover-card-main-over-white mt--160">        
+    <div class="row">
                 <div class="col-lg-12">
                     <div class="title-area-between pl--0">
                         <h2 class="title-left mb--0">
@@ -3411,7 +3416,7 @@
                     </div>
                 </div>
             </div>
-             <div class="row g-5 tranding-items-wrapper-padding-bg-wrapper-list-tabs margin-decrease-y" >
+    <div class="row g-5 tranding-items-wrapper-padding-bg-wrapper-list-tabs margin-decrease-y" >
                 <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12">
                     <div class="d-flex align-items-start">
                         <div class="nav main-nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -3492,7 +3497,7 @@
                                                 </div>
                                                 <div class="cart-counter-action">
                                                     <a href="#" class="rts-btn btn-primary radious-sm with-icon">
-                                                        <div class="btn-text">
+                                                        <div type="button" class="btn-text" data-product-id="@Model.trendingProducts[i].Id" data-user-id="@(ViewBag.UserId ?? "")">
                                                             Add To Cart
                                                         </div>
                                                         <div class="arrow-icon">
@@ -4659,20 +4664,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+            </div>        
+ </div>
+</div>
 <!-- tranding items tabs areas end -->
 
-
-
-
-
-
 <!-- four feature areas start -->
-
-<div class="container cover-card-main-over-white mt--160">
-<div class="four-feature-in-one rts-section-gapBottom">
+<div class="container">
+  <div class="container cover-card-main-over-white mt--160">
+  <div class="four-feature-in-one rts-section-gapBottom">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-3">
@@ -4697,8 +4697,7 @@
                                           @for (int m = 0; m < @Model.latestProducts[i].Star; m++)
                                             {
                                                 <i class="fa-solid fa-star"></i>
-                                            }                                             
-                                              
+                                            }                                           
                                           </div>
                                           <a href="/shop-details/{@Model.latestProducts[i].Id}s">
                                               <h4 class="title">@Model.latestProducts[i].Name</h4>
@@ -4974,14 +4973,15 @@
             </div>
         </div>
     </div>
+</div>
 <!-- four feature areas end -->
 </div>
 
 <div class="mb--160"></div>
     
 
-    <!-- rts copyright-area start -->
-    <div class="rts-copyright-area five-h">
+<!-- rts copyright-area start -->
+<div class="rts-copyright-area five-h">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -4999,9 +4999,9 @@
             </div>
         </div>
     </div>
-    <!-- rts copyright-area end -->
-    <!-- modal -->
-    <div id="myModal-1" class="modal fade" role="dialog">
+<!-- rts copyright-area end -->
+<!-- modal -->
+<div id="myModal-1" class="modal fade" role="dialog">
         <div class="modal-dialog bg_image">
             <div class="modal-content">
                 <div class="modal-header">
@@ -5044,8 +5044,7 @@
         </div>
     </div>
 
-
-    <div class="product-details-popup-wrapper">
+<div class="product-details-popup-wrapper">
         <div class="rts-product-details-section rts-product-details-section2 product-details-popup-section">
             <div class="product-details-popup">
                 <button class="product-details-close-btn"><i class="fal fa-times"></i></button>
@@ -5147,11 +5146,10 @@
                 </div>
             </div>
         </div>
-    </div>
-      
+    </div>      
 
-    <!-- footer area start -->
-    <div class="rts-footer-area pt--80 bg_blue-footer">
+<!-- footer area start -->
+<div class="rts-footer-area pt--80 bg_blue-footer">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -5260,6 +5258,6 @@
         </div>
     </div>
 </div>
-    <!-- footer area end -->
+<!-- footer area end -->
 
    

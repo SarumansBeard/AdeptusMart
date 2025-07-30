@@ -2,6 +2,7 @@
 @model LoginViewModel
 @{
     Layout = "_Layout";
+    
 }
 <!-- rts header area start -->
 <div class="rts-header-one-area-one">
@@ -578,7 +579,7 @@
                         <img class="mb--10" src="~/assets/images/icons/127.svg" alt="logo">
                     </div>
                     <h3 class="title">Login Into Your Account</h3>
-                    <form method="post" asp-validation-summary="ModelOnly" asp-action="Login" asp-controller="Login" class="registration-form">
+                    <form method="post" asp-validation-summary="ModelOnly" asp-action="Index" asp-controller="Login" class="registration-form">
                         <div class="input-wrapper">
                             <label asp-for="Account.Username">Username*</label>
                             <input type="text" asp-for="Account.Username">

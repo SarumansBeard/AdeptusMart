@@ -6,6 +6,6 @@ namespace AdeptusMart04.WebUI.Models
     {
         public List<Category> Categories { get; set; } = new List<Category>();
 
-        public Account Account { get; set; } = new Account();
+        
     }
 }

@@ -16953,9 +16953,9 @@ body.sal-disabled [data-sal|=flip] {
             padding-left: var(--bs-gutter-x, 0.75rem);
             margin-right: auto;
             margin-left: auto;
-            max-width: 1696px;
+            max-width: 1850px;
             margin: auto;
-            padding: 0 15px;
+            padding: 0 25px;
         }
 
         .container-2 {

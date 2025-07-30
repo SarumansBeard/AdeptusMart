@@ -16,9 +16,12 @@ namespace AdeptusMart02.DataAccessLayer.Abstract
         Task<List<Product>> GetAllWithCategoryAsync();
         Task<Product> GetByIdWithCategoryAsync(Guid id);
         Task<List<Product>> GetFilteredProductsWithCategoryAsync(List<Guid> id , List<decimal>? filteredPrices,decimal? sortBy, string? reset);
-       
+        Task<string> GetProductNameById(Guid productId);
 
-    
+
+
+
+
     }
 
 }

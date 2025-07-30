@@ -3,6 +3,7 @@ using AdeptusMart.Business.Services;
 using AdeptusMart01.Core.Entities;
 using AdeptusMart03.BusinessAccessLayer.Services;
 using AdeptusMart04.WebUI.Models;
+using AdeptusMart05.WebUI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -11,16 +12,15 @@ using System.Threading.Tasks;
 
 namespace AdeptusMart04.WebUI.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseSignInController
     {
         private readonly ProductService _productService;
         private readonly HomeService _homeService;
         private readonly HttpClient _httpClient;
 
-        public ProductController(ProductService productService, HomeService homeService)
+        public ProductController()
         {
-            _productService = productService;
-            _homeService = homeService;
+            
             _httpClient = new HttpClient();
         }
 

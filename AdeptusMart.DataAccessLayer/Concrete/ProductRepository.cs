@@ -122,6 +122,16 @@ namespace AdeptusMart02.DataAccessLayer.Concrete
             return await query.ToListAsync();
         }
 
+        public async Task<string> GetProductNameById(Guid productId)
+        {
+            var name =await _context.Products
+                .Where(p => p.Id == productId)
+                .Select(p=>p.Name)
+                .FirstOrDefaultAsync();
+
+            return name.ToString();
+        }
+
 
 
 

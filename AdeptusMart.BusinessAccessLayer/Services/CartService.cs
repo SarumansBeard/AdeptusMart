@@ -15,30 +15,28 @@ namespace AdeptusMart03.BusinessAccessLayer.Services
         private readonly IRepository<CartItem> _cartItemRepo;
         private readonly ICartRepository _cartRepo;
         private readonly IAccountRepository _accountRepo;
+        private readonly IProductRepository _productRepo;        
 
 
-        public CartService(IRepository<CartItem> cartItemRepo, ICartRepository cartRepo, IAccountRepository _accountRepo)
+        public CartService(IRepository<CartItem> cartItemRepo, ICartRepository cartRepo, IAccountRepository accountRepo, IProductRepository productRepo)
         {
             _cartRepo = cartRepo;
             _cartItemRepo = cartItemRepo;
-            _accountRepo = _accountRepo;
+            _accountRepo = accountRepo;
+            _productRepo = productRepo;
         }
 
-        public async Task<List<CartItem>> ShowCartItems(string sessionId)
+        public async Task<List<CartItem>> ShowCartItems(string userId)
         {
-            var allUserId = await _accountRepo.GetAllAsync();
-
-            var sessionUserId = allUserId
-                .Where(a => a.SessionId == sessionId && a.IsSignIn == true)
-                .Select(a => a.Id).FirstOrDefault();
+            Guid userIdGuid = Guid.Parse(userId);
 
             var allCartId = await _cartRepo.GetAllAsync();
 
-            var sessionCartId = allCartId
-                .Where(x=>x.UserId == sessionUserId)
+            var cartId = allCartId
+                .Where(x=>x.UserId == userIdGuid)
                 .Select(x => x.Id).FirstOrDefault();
 
-            if (sessionUserId == Guid.Empty)
+            if (userIdGuid == Guid.Empty)
             {
                 return new List<CartItem>();
             }
@@ -47,7 +45,7 @@ namespace AdeptusMart03.BusinessAccessLayer.Services
                 var allcartItems = await _cartItemRepo.GetAllAsync();
 
                 var userCartItems = allcartItems
-                    .Where(x=>x.CartId == sessionCartId)
+                    .Where(x=>x.CartId == cartId)
                     .ToList();
 
                 return userCartItems;
@@ -65,24 +63,40 @@ namespace AdeptusMart03.BusinessAccessLayer.Services
 
 
         
-        public async Task AddToCartService(Guid productId, int quantity,string sesionIdfromContext)
+        public async Task AddToCartService(Guid productId, int quantity,string userId)
         {
             
-            if (productId == Guid.Empty || quantity <= 0 || sesionIdfromContext == null)
+            if (productId == Guid.Empty || quantity <= 0 || userId == null)
             {
                return;
             }          
 
-            var cartId = await _cartRepo.GetCartIdWithSessionId(sesionIdfromContext);
+            var cartId = await _cartRepo.GetCartIdWithUserId(userId);
            
+            var cartItems = await _cartRepo.GetCartItemsByCartId(cartId);
+
+            var cartItemName = await _productRepo.GetProductNameById(productId);
+
             try
             {
+                if(cartItems.Where(x=>x.ProductId == productId).Any())
+                {
+                    var existingCartItem = cartItems.FirstOrDefault(x => x.ProductId == productId);
+                    if (existingCartItem != null)
+                    {
+                        existingCartItem.Quantity += quantity;
+                        await _cartItemRepo.UpdateAsync(existingCartItem);
+                        return;
+                    }
+                }
+                
                 CartItem cartItem = new CartItem
                 {
                     Id = Guid.NewGuid(),
                     CartId = cartId,
                     Quantity = quantity,
-                    ProductId = productId
+                    ProductId = productId,
+                    ProductName = cartItemName
                 };
 
                 await _cartItemRepo.AddAsync(cartItem);

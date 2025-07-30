@@ -2,11 +2,12 @@
 using AdeptusMart01.Core.Entities;
 using AdeptusMart03.BusinessAccessLayer.Services;
 using AdeptusMart04.WebUI.Models;
+using AdeptusMart05.WebUI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdeptusMart04.WebUI.Controllers
 {
-    public class RegisterController : Controller
+    public class RegisterController : BaseSignInController
     {
         private readonly ProductService _productService;
         private readonly RegisterService _registerService;

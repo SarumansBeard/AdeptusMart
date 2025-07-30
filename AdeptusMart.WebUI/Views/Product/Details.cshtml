@@ -1,12 +1,9 @@
 ﻿@using AdeptusMart04.WebUI.Models
 @model ProductDetailsViewModel
 
-
-<!DOCTYPE html>
-<html lang="en">
-
 @{
     Layout = "_Layout";
+    var IsLoginSuccess = ViewBag.IsLoginSuccess;
 }
 
 <!-- rts header area start -->
@@ -652,8 +649,8 @@
                                                     <button class="button plus">+<i class="fal fa-plus plus"></i></button>
                                                 </div>
                                             </div>
-                                            <a href="#" class="rts-btn btn-primary radious-sm with-icon">
-                                                <div class="btn-text">
+                                            <a class="rts-btn btn-primary radious-sm with-icon">                                                
+                                                <div class="btn-text" type="button" data-product-id="@Model.ProductDetail.Id" data-user-id="@(ViewBag.UserId ?? "")">
                                                     Add To Cart
                                                 </div>
                                                 <div class="arrow-icon">
@@ -1063,7 +1060,7 @@
                                                             </div>
                                                         </div>
                                                         <a href="#" class="rts-btn btn-primary radious-sm with-icon">
-                                                            <div class="btn-text">
+                                                            <div class="btn-text" data-product-id="@Model.RandomProducts[i].Id" data-user-id="@(ViewBag.UserId ?? "")">
                                                                 Add To Cart
                                                             </div>
                                                             <div class="arrow-icon">
@@ -1319,21 +1316,8 @@
         </div>
     </div>
     <!-- rts copyright-area end -->
-
-
-    
-  
+     
 
 
 
 
-
-   
-
-
-
-
- 
-    
-    
-   </html>

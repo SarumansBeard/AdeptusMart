@@ -2,12 +2,13 @@
 using AdeptusMart01.Core.Entities;
 using AdeptusMart03.BusinessAccessLayer.Services;
 using AdeptusMart04.WebUI.Models;
+using AdeptusMart05.WebUI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdeptusMart04.WebUI.Controllers
 {
-    public class CartController : Controller
+    public class CartController : BaseSignInController
     {
         private readonly CartService _cartcontext ;
         public CartController(CartService cartcontext)

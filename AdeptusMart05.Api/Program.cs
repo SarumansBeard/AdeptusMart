@@ -7,6 +7,7 @@ using AdeptusMart02.DataAccessLayer.Abstract;
 using AdeptusMart02.DataAccessLayer.Concrete;
 using AdeptusMart02.DataAccessLayer.Contexts;
 using AdeptusMart03.BusinessAccessLayer.Services;
+using AdeptusMart04.Api.Context;
 using AdeptusMart05.Api.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,6 +61,8 @@ namespace AdeptusMart05.Api
             builder.Services.AddScoped<HomeApiContext>();
             builder.Services.AddScoped<ProductApiContext>();
             builder.Services.AddScoped<ShopGridApiContext>();
+            builder.Services.AddScoped<CartApiContext>();
+            builder.Services.AddScoped<LoginApiContext>();
             
 
 

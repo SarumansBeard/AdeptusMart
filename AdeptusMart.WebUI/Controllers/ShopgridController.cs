@@ -3,6 +3,7 @@ using AdeptusMart.BusinessAccessLayer.Services;
 using AdeptusMart01.Core.Entities;
 using AdeptusMart04.WebUI.Models;
 using AdeptusMart05.Api.DTOs;
+using AdeptusMart05.WebUI.Controllers;
 using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ using System.Net.Http;
 
 namespace AdeptusMart04.WebUI.Controllers
 {
-    public class ShopgridController : Controller
+    public class ShopgridController : BaseSignInController
     {
 
         public readonly ShopgridService _shopgridService;

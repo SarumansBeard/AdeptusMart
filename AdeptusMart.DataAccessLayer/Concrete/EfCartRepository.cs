@@ -21,22 +21,19 @@ namespace AdeptusMart02.DataAccessLayer.Concrete
         }
 
         
-        public async Task<Guid> GetCartIdWithSessionId(string sessionId)
+        public async Task<Guid> GetCartIdWithUserId(string userId)
         {
-            var userId = await _context.Accounts
-                .Where(x => x.SessionId == sessionId)
-                .Select(x=>x.Id)
-                .FirstOrDefaultAsync();
+            var userIdGuid = Guid.Parse(userId);
 
             bool IsCartExists = await _context.Carts
-                .AnyAsync(x => x.UserId == userId);
+                .AnyAsync(x => x.UserId == userIdGuid);
 
             if (!IsCartExists)
             {
                 var newCart = new Cart
                 {
                     Id = Guid.NewGuid(),
-                    UserId = userId,
+                    UserId = userIdGuid,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow                    
                 };
@@ -47,10 +44,17 @@ namespace AdeptusMart02.DataAccessLayer.Concrete
             else
             {
                 return await _context.Carts
-                .Where(x => x.UserId == userId)
+                .Where(x => x.UserId == userIdGuid)
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();        
             }
+        }
+
+        public async Task<List<CartItem>> GetCartItemsByCartId(Guid cartId)
+        {
+            return await _context.CartItems
+                         .Where(x => x.CartId == cartId)
+                         .ToListAsync();
         }
 
        

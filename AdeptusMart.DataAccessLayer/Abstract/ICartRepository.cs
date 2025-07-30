@@ -9,7 +9,8 @@ namespace AdeptusMart02.DataAccessLayer.Abstract
 {
     public interface ICartRepository : IRepository<Cart>
     {
-        Task<Guid> GetCartIdWithSessionId(string sessionId);
+        Task<Guid> GetCartIdWithUserId(string sessionId);
+        Task<List<CartItem>> GetCartItemsByCartId(Guid cartId);
     }
     
 }

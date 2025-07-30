@@ -1,6 +1,12 @@
-﻿using AdeptusMart03.BusinessAccessLayer.Services;
+﻿using AdeptusMart01.Core.Entities;
+using AdeptusMart03.BusinessAccessLayer.Services;
 using AdeptusMart04.WebUI.Models;
+using AdeptusMart05.WebUI.Controllers;
+using AdeptusMart05.WebUI.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net;
+using System.Text;
 
 namespace AdeptusMart04.WebUI.Controllers
 {
@@ -8,12 +14,14 @@ namespace AdeptusMart04.WebUI.Controllers
     {
         private readonly ProductService _productService;
         private readonly LoginService _loginService;
+        private readonly HttpClient _httpClient;
 
         public LoginController(ProductService productService, LoginService loginService)
         {
             _productService = productService;
-            _loginService = loginService;
+            _httpClient = new HttpClient();
         }
+
         public async Task <IActionResult> Index()
         {
             
@@ -28,35 +36,67 @@ namespace AdeptusMart04.WebUI.Controllers
             return View(model);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Login (LoginViewModel model)
+        public async Task<IActionResult> Index(LoginViewModel model)
         {
-            bool LoginSuccess;
-
-            var username = model.Account.Username;
-            var password = model.Account.Password;
-            var sessionId = HttpContext.Session.Id;
-
-            LoginSuccess =await _loginService.LogIn(username, password,sessionId);
-
-            try
+            var accountDto = new AccountDTO
             {
-                if (LoginSuccess == true)
-                {
-                    TempData["IsLoginSuccess"] = true;
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    TempData["IsLoginSuccess"] = false;                    
-                    return RedirectToAction("Index", "Login");
-                }
-            }
-            catch (Exception ex)
+                Username = model.Account.Username,
+                Password = model.Account.Password
+            };
+
+            var Json= JsonConvert.SerializeObject(accountDto);
+            var content = new StringContent(Json, Encoding.UTF8, "application/json");
+
+            Console.WriteLine(await content.ReadAsStringAsync());
+
+            HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7112/api/account/login",content);
+
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                ModelState.AddModelError("", ex.Message);
-                return View("Index");
+                TempData["IsLoginSuccess"] = false;
+                return View(model);
             }
+            else if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                TempData["IsLoginSuccess"] = false;
+                return View(model);
+            }
+            else if (response.StatusCode == HttpStatusCode.OK)
+            {
+                
+                string stringContent = await response.Content.ReadAsStringAsync();
+                Guid? accountId = JsonConvert.DeserializeObject<Guid?>(stringContent);
+
+                try
+                {
+                    if (accountId != null)
+                    {
+                        TempData["IsLoginSuccess"] = true;
+                        HttpContext.Session.SetString("UserId", accountId.ToString());
+                        Console.WriteLine($"Kullanıcı Giriş Başarılı: {accountId}");
+                        return RedirectToAction("Index", "Home");
+                        
+                    }
+                    else
+                    {
+                        TempData["IsLoginSuccess"] = false;
+                        return RedirectToAction("Index", "Login");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return View("Index");
+                }
+
+            }
+            else
+            {
+                return View(model);
+            }            
 
         }
 

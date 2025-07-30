@@ -51,6 +51,17 @@
             rtsJs.modalOver();
             rtsJs.darklightSwitcher();
             rtsJs.errormodalOver();
+            
+            document.querySelectorAll('[data-product-id]').forEach(button => {
+                button.addEventListener('click', function (event) {  
+                    const productId = this.getAttribute('data-product-id');
+                    const currentUserId = this.getAttribute('data-user-id');
+                    event.preventDefault();
+                    rtsJs.addtocart(productId,currentUserId);
+                });
+            });
+            
+            
         },
 
         preloader: function(e){
@@ -113,7 +124,6 @@
   
         },
 
-
         swiperActivation: function(){
           $(document).ready(function(){
             let defaults = {
@@ -171,7 +181,6 @@
           });
 
         },
-
 
         cartNumberIncDec: function(){
           $(document).ready(function(){
@@ -286,7 +295,6 @@
           
         },
 
-
         zoonImage: function(){
           $(document).ready(function(){
             function imageZoom(imgID, resultID) {
@@ -350,7 +358,6 @@
 
           });
         },
-
 
         modalpopupCard: function(){
             // Newsletter popup
@@ -734,7 +741,6 @@
               }
           });
         },
-
         
         modalOver: function(){
           $(document).ready(function () {
@@ -871,6 +877,40 @@
 
         },
 
+        addtocart: function (productId,currentUserId) {
+            const baseURL = "https://localhost:7112";            
+            const quantity = 1;
+            
+
+            const url = `${baseURL}/api/cartitems/add?productId=${productId}&quantity=${quantity}&userId=${currentUserId}`;
+
+            fetch(url, { method: "POST" })
+                .then(async response => {
+                    console.log("HTTP status:", response.status);
+                    if (!response.ok) throw new Error("Bir hata oluştu: " + response.statusText);
+
+                    // Body var mı, JSON mu kontrol et
+                    const text = await response.text();
+                    console.log("Response body text:", text);
+
+                    // Eğer boşsa boş obje döndür, yoksa parse et
+                    return text ? JSON.parse(text) : {};
+                })
+                .then(result => {
+                    console.log("Başarılı:", result);
+                    alert("Ürün sepete eklendi!");
+                })
+                .catch(error => {
+                    console.error("Hata:", error);
+                    alert("Sepete eklenemedi.");
+                });
+
+        },
+
+        
+            
+
+
         
     }
 
@@ -908,27 +948,37 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         slider.noUiSlider.on('update', function (values, handle) {
-            var min = Math.floor(values[0]);
-            var max = Math.floor(values[1]);
+            var min = Math.floor(values[0]) || 0;
+            var max = Math.floor(values[1]) || 0;
 
-            inputMin.value = min;
-            inputMax.value = max;
+            if (inputMin) inputMin.value = min;
+            if (inputMax) inputMax.value = max;
 
-            priceMin.value = min;
-            priceMax.value = max;
+            if (priceMin) priceMin.value = min;
+            if (priceMax) priceMax.value = max;
 
-            document.getElementById('priceMinDisplay').innerText = min;
-            document.getElementById('priceMaxDisplay').innerText = max;
+            const priceMinDisplay = document.getElementById('priceMinDisplay');
+            const priceMaxDisplay = document.getElementById('priceMaxDisplay');
+
+            if (priceMinDisplay) priceMinDisplay.innerText = min;
+            if (priceMaxDisplay) priceMaxDisplay.innerText = max;
         });
 
-        inputMin.addEventListener('change', function () {
-            slider.noUiSlider.set([this.value, null]);
-        });
+        if (inputMin) {
+            inputMin.addEventListener('change', function () {
+                slider.noUiSlider.set([this.value || 0, null]);
+            });
+        }
 
-        inputMax.addEventListener('change', function () {
-            slider.noUiSlider.set([null, this.value]);
-        });
+        if (inputMax) {
+            inputMax.addEventListener('change', function () {
+                slider.noUiSlider.set([null, this.value || 0]);
+            });
+        }
+
     }
+
+    
 });
 
 

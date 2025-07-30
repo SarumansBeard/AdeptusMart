@@ -32,6 +32,9 @@ namespace AdeptusMart05.Api.Controllers
                 Details = product.Details,
                 Information = product.Information,
                 ImageUrl1 = product.ImageUrl1,
+                ImageUrl2 = product.ImageUrl2,
+                ImageUrl3 = product.ImageUrl3,
+                ImageUrl4 = product.ImageUrl4,
                 Category = new CategoryDTO
                 {
                     Id = product.Category.Id,
